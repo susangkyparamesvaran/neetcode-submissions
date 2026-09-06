@@ -1,0 +1,29 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        subset = []
+
+        candidates.sort()
+
+        def backtrack(i, subset, total):
+            if total == target:
+                result.append(subset.copy())
+                return
+            
+            if total > target or i == len(candidates):
+                return
+
+            # take element
+            subset.append(candidates[i])            
+            backtrack(i + 1, subset, total + candidates[i])
+            subset.pop()
+
+            # skip element
+            # so when we see the current value and the next value are the same, then we skip this element
+            while i + 1 < len(candidates) and candidates[i] == candidates[i+1]:
+                i = i + 1
+            
+            backtrack(i+1, subset, total)
+        
+        backtrack(0, [], 0)
+        return result
